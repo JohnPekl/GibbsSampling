@@ -8,7 +8,7 @@ _Vo, Ba-Ngu, Ba-Tuong Vo, and Hung Gia Hoang. "An efficient implementation of th
 
 - Python 3.7
 - C++ compiler (eg. Windows: Visual Studio 15 2017, Ubuntu: g++)
-- `git clone --recursive https://github.com/JohnPekl/GibbsSampling.git `
+- `git clone https://github.com/pybind/pybind11.git `
 ## Install
 
 `python setup.py build develop`
