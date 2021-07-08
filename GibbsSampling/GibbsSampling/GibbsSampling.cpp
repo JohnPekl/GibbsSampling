@@ -22,13 +22,6 @@ std::tuple<vector<vector<int>>, vector<double>> gibbs_jointpredupdt(vector<vecto
 
 	vector<vector<int>> assignments(m, vector<int>(p0_row));
 	vector<int> currsoln(p0_row);
-
-	// use all missed detections as initial solution
-	for (int i = 0; i < p0_row; i++) {
-		currsoln[i] = p0_row + i;
-	}
-	assignments[0] = currsoln;
-
 	vector<double> tempsamp(p0_col);
 	vector<int> idxold(p0_col + 1, 0);
 	vector<double> cumsum(p0_col + 1, 0.0);
@@ -39,14 +32,15 @@ std::tuple<vector<vector<int>>, vector<double>> gibbs_jointpredupdt(vector<vecto
 		for (int j = 0; j < p0_col; j++) {
 			P0_exp[i][j] = exp(-P0[i][j]);
 		}
+		currsoln[i] = p0_row + i;
 	}
+	// use all missed detections as initial solution
+	assignments[0] = currsoln;
 
 	for (int sol = 1; sol < m; sol++) {
 		for (int var = 0; var < p0_row; var++) {
 			// grab row of costs for current association variable
-			for (int i = 0; i < p0_col; i++) {
-				tempsamp[i] = P0_exp[var][i];// exp(-P0[var][i]);
-			}
+			tempsamp = P0_exp[var];
 			// lock out current and previous iteration step assignments except for the one in question
 			for (int i = 0; i < p0_row; i++) {
 				if (i == var)
